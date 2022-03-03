@@ -1,4 +1,4 @@
-module golang-shell
+module github.com/ibrt/golang-shell
 
 go 1.17
 

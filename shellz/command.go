@@ -15,7 +15,7 @@ type Logf func(string, ...interface{})
 var (
 	// DefaultLogf is the default implementation of Logf.
 	DefaultLogf = func(cmd string, params ...interface{}) {
-		fmt.Println(append([]interface{}{"[shell]", cmd}, params...))
+		fmt.Println(append([]interface{}{"[shell]", cmd}, params...)...)
 	}
 )
 

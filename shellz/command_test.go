@@ -10,8 +10,8 @@ import (
 	"github.com/ibrt/golang-fixtures/fixturez"
 	"github.com/stretchr/testify/require"
 
-	"golang-shell/shellz"
-	"golang-shell/shellz/internal/fixtures"
+	"github.com/ibrt/golang-shell/shellz"
+	"github.com/ibrt/golang-shell/shellz/internal/fixtures"
 )
 
 func TestCommand_Output(t *testing.T) {

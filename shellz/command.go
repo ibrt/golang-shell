@@ -15,7 +15,7 @@ type Logf func(string, ...interface{})
 var (
 	// DefaultLogf is the default implementation of Logf.
 	DefaultLogf = func(cmd string, params ...interface{}) {
-		fmt.Println(append([]interface{}{cmd}, params...))
+		fmt.Println(append([]interface{}{"[shell]", cmd}, params...))
 	}
 )
 
@@ -32,10 +32,10 @@ type Command struct {
 }
 
 // NewCommand creates a new Command.
-func NewCommand(cmd string, params ...interface{}) *Command {
+func NewCommand(cmd string, initialParams ...interface{}) *Command {
 	return &Command{
 		cmd:    cmd,
-		params: params,
+		params: initialParams,
 		logf:   DefaultLogf,
 		env:    make(map[string]string),
 	}
@@ -104,7 +104,7 @@ func (c *Command) Run() error {
 	return errorz.MaybeWrap(c.toSH().Run(), errorz.Skip())
 }
 
-// MustRun runs the commands, panics on error.
+// MustRun is like Run but panics on error.
 func (c *Command) MustRun() {
 	errorz.MaybeMustWrap(c.Run(), errorz.Skip())
 }
@@ -118,7 +118,7 @@ func (c *Command) Output() (string, error) {
 	return strings.TrimSpace(string(rawOutput)), nil
 }
 
-// MustOutput is like output but panics on error.
+// MustOutput is like Output but panics on error.
 func (c *Command) MustOutput() string {
 	output, err := c.Output()
 	errorz.MaybeMustWrap(err, errorz.Skip())

@@ -8,8 +8,8 @@ github.com/ibrt/golang-bites v1.2.0 h1:ZCDmtrCsJGS21YTY7UngcEjrXvpNIJp6Gy30w4JMk
 github.com/ibrt/golang-bites v1.2.0/go.mod h1:3DOaWxa9TxIJLGLfv2D3cFa7BGNfJxfrwHkT2yteRRY=
 github.com/ibrt/golang-errors v1.0.0 h1:3+ccXbAfLGL0PsMFxrtvlWr42lyncqVL7cSWltLYfpI=
 github.com/ibrt/golang-errors v1.0.0/go.mod h1:T4eQeBJ8CKAp52LT1dHwJ6qKnWKRgoTjDqDF7DM2U08=
-github.com/ibrt/golang-fixtures v1.0.0 h1:9IEnSF9weLV7FFR9UVXOGzpXw1oXS+e4xu3MX52ukqs=
-github.com/ibrt/golang-fixtures v1.0.0/go.mod h1:r9f6ELcaIPI2g13gWIUkwLSl5c7LTJDhyJMBVvsQ+FE=
+github.com/ibrt/golang-fixtures v1.1.0 h1:JZAlgnG8ibrsgNX2de92w9+oARfeKYY+IjBF2hk5rDg=
+github.com/ibrt/golang-fixtures v1.1.0/go.mod h1:r9f6ELcaIPI2g13gWIUkwLSl5c7LTJDhyJMBVvsQ+FE=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

@@ -11,11 +11,10 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/ibrt/golang-shell/shellz"
-	"github.com/ibrt/golang-shell/shellz/internal/fixtures"
 )
 
 func TestCommand_Output(t *testing.T) {
-	c := fixtures.CaptureOutput()
+	c := fixturez.CaptureOutput()
 	defer c.Close()
 
 	out, err := shellz.NewCommand("cat", "-b").
@@ -28,7 +27,7 @@ func TestCommand_Output(t *testing.T) {
 }
 
 func TestCommand_Run(t *testing.T) {
-	c := fixtures.CaptureOutput()
+	c := fixturez.CaptureOutput()
 	defer c.Close()
 
 	err := shellz.NewCommand("cat").
@@ -42,7 +41,7 @@ func TestCommand_Run(t *testing.T) {
 }
 
 func TestCommand_MustRun(t *testing.T) {
-	c := fixtures.CaptureOutput()
+	c := fixturez.CaptureOutput()
 	defer c.Close()
 
 	require.Panics(t, func() {
@@ -51,7 +50,7 @@ func TestCommand_MustRun(t *testing.T) {
 }
 
 func TestCommand_MustOutput(t *testing.T) {
-	c := fixtures.CaptureOutput()
+	c := fixturez.CaptureOutput()
 	defer c.Close()
 
 	require.Panics(t, func() {
@@ -60,7 +59,7 @@ func TestCommand_MustOutput(t *testing.T) {
 }
 
 func TestCommand_HideCmd(t *testing.T) {
-	c := fixtures.CaptureOutput()
+	c := fixturez.CaptureOutput()
 	defer c.Close()
 
 	err := shellz.NewCommand("cat").
@@ -75,7 +74,7 @@ func TestCommand_HideCmd(t *testing.T) {
 }
 
 func TestCommand_Stdout(t *testing.T) {
-	c := fixtures.CaptureOutput()
+	c := fixturez.CaptureOutput()
 	defer c.Close()
 	out := &bytes.Buffer{}
 
@@ -90,7 +89,7 @@ func TestCommand_Stdout(t *testing.T) {
 }
 
 func TestCommand_Stderr(t *testing.T) {
-	c := fixtures.CaptureOutput()
+	c := fixturez.CaptureOutput()
 	defer c.Close()
 	out := &bytes.Buffer{}
 
@@ -104,7 +103,7 @@ func TestCommand_Stderr(t *testing.T) {
 }
 
 func TestCommand_SetDir(t *testing.T) {
-	c := fixtures.CaptureOutput()
+	c := fixturez.CaptureOutput()
 	defer c.Close()
 	dir := filepath.Dir(filez.MustAbs("."))
 
@@ -117,7 +116,7 @@ func TestCommand_SetDir(t *testing.T) {
 }
 
 func TestCommand_SetEnv(t *testing.T) {
-	c := fixtures.CaptureOutput()
+	c := fixturez.CaptureOutput()
 	defer c.Close()
 
 	err := shellz.NewCommand("env").
@@ -129,7 +128,7 @@ func TestCommand_SetEnv(t *testing.T) {
 }
 
 func TestCommand_SetEnvMap(t *testing.T) {
-	c := fixtures.CaptureOutput()
+	c := fixturez.CaptureOutput()
 	defer c.Close()
 
 	err := shellz.NewCommand("env").

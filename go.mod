@@ -6,7 +6,7 @@ require (
 	github.com/codeskyblue/go-sh v0.0.0-20200712050446-30169cf553fe
 	github.com/ibrt/golang-bites v1.2.0
 	github.com/ibrt/golang-errors v1.0.0
-	github.com/ibrt/golang-fixtures v1.0.0
+	github.com/ibrt/golang-fixtures v1.1.0
 	github.com/stretchr/testify v1.7.0
 )
 

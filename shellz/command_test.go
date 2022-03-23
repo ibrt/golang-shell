@@ -6,7 +6,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ibrt/golang-bites/filez"
 	"github.com/ibrt/golang-fixtures/fixturez"
 	"github.com/stretchr/testify/require"
 
@@ -105,9 +104,10 @@ func TestCommand_Stderr(t *testing.T) {
 func TestCommand_SetDir(t *testing.T) {
 	c := fixturez.CaptureOutput()
 	defer c.Close()
-	dir := filepath.Dir(filez.MustAbs("."))
+	dir, err := filepath.Abs(".")
+	fixturez.RequireNoError(t, err)
 
-	err := shellz.NewCommand("pwd").
+	err = shellz.NewCommand("pwd").
 		SetDir(dir).
 		Run()
 	fixturez.RequireNoError(t, err)

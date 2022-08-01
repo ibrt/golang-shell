@@ -150,10 +150,14 @@ func (c *Command) MustExec() {
 
 	binFilePath, err := exec.LookPath(c.cmd)
 	errorz.MaybeMustWrap(err)
-	env := os.Environ()
 
+	env := os.Environ()
 	for k, v := range c.env {
 		env = append(env, fmt.Sprintf("%v=%v", k, v))
+	}
+
+	if c.dir != "" {
+		errorz.MaybeMustWrap(os.Chdir(c.dir))
 	}
 
 	errorz.MaybeMustWrap(syscall.Exec(binFilePath, append([]string{c.cmd}, c.params...), env))

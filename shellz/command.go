@@ -3,7 +3,10 @@ package shellz
 import (
 	"fmt"
 	"io"
+	"os"
+	"os/exec"
 	"strings"
+	"syscall"
 
 	"github.com/codeskyblue/go-sh"
 	"github.com/ibrt/golang-errors/errorz"
@@ -125,6 +128,27 @@ func (c *Command) MustOutput() string {
 	return output
 }
 
+// MustExec replaces the current process using syscall.Exec with the Command. Note that:
+// - It never returns.
+// - It ignores stdin/stdout/stderr settings.
+// - Unlike MustRun/MustOutput, it coerces params to strings using fmt.Sprintf.
+func (c *Command) MustExec() {
+	if c.logf != nil {
+		c.logf(c.cmd, c.params...)
+	}
+
+	args := c.stringifySlice(append([]interface{}{c.cmd}, c.params...))
+	binFilePath, err := exec.LookPath(c.cmd)
+	errorz.MaybeMustWrap(err)
+	env := os.Environ()
+
+	for k, v := range c.env {
+		env = append(env, fmt.Sprintf("%v=%v", k, v))
+	}
+
+	errorz.MaybeMustWrap(syscall.Exec(binFilePath, args, env))
+}
+
 func (c *Command) toSH() *sh.Session {
 	shl := sh.NewSession()
 	shl.ShowCMD = false
@@ -154,4 +178,18 @@ func (c *Command) toSH() *sh.Session {
 	}
 
 	return shl.Command(c.cmd, c.params...)
+}
+
+func (c *Command) stringifySlice(params []interface{}) []string {
+	stringParams := make([]string, len(params))
+
+	for i, param := range params {
+		if s, ok := param.(string); ok {
+			stringParams[i] = s
+		} else {
+			stringParams[i] = fmt.Sprintf("%v", s)
+		}
+	}
+
+	return stringParams
 }

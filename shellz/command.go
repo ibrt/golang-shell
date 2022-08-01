@@ -24,37 +24,48 @@ var (
 
 // Command describes a command to be spawned in a shell.
 type Command struct {
-	cmd    string
-	params []interface{}
-	logf   Logf
-	env    map[string]string
-	dir    string
-	stdin  io.Reader
-	stdout io.Writer
-	stderr io.Writer
+	cmd             string
+	params          []string
+	interfaceParams []interface{}
+	logf            Logf
+	env             map[string]string
+	dir             string
+	stdin           io.Reader
+	stdout          io.Writer
+	stderr          io.Writer
 }
 
 // NewCommand creates a new Command.
 func NewCommand(cmd string, initialParams ...interface{}) *Command {
-	return &Command{
+	c := &Command{
 		cmd:    cmd,
-		params: initialParams,
+		params: make([]string, 0),
 		logf:   DefaultLogf,
 		env:    make(map[string]string),
 	}
+
+	for _, initialParam := range initialParams {
+		c.addParam(initialParam)
+	}
+
+	return c
 }
 
 // AddParams appends the given params to the command.
 func (c *Command) AddParams(params ...interface{}) *Command {
-	c.params = append(c.params, params...)
+	for _, param := range params {
+		c.addParam(param)
+	}
+
 	return c
 }
 
 // AddParamsString appends the given params to the command.
 func (c *Command) AddParamsString(params ...string) *Command {
 	for _, param := range params {
-		c.params = append(c.params, param)
+		c.addParam(param)
 	}
+
 	return c
 }
 
@@ -134,10 +145,9 @@ func (c *Command) MustOutput() string {
 // - Unlike MustRun/MustOutput, it coerces params to strings using fmt.Sprintf.
 func (c *Command) MustExec() {
 	if c.logf != nil {
-		c.logf(c.cmd, c.params...)
+		c.logf(c.cmd, c.interfaceParams...)
 	}
 
-	args := c.stringifySlice(append([]interface{}{c.cmd}, c.params...))
 	binFilePath, err := exec.LookPath(c.cmd)
 	errorz.MaybeMustWrap(err)
 	env := os.Environ()
@@ -146,7 +156,7 @@ func (c *Command) MustExec() {
 		env = append(env, fmt.Sprintf("%v=%v", k, v))
 	}
 
-	errorz.MaybeMustWrap(syscall.Exec(binFilePath, args, env))
+	errorz.MaybeMustWrap(syscall.Exec(binFilePath, append([]string{c.cmd}, c.params...), env))
 }
 
 func (c *Command) toSH() *sh.Session {
@@ -174,22 +184,19 @@ func (c *Command) toSH() *sh.Session {
 	}
 
 	if c.logf != nil {
-		c.logf(c.cmd, c.params...)
+		c.logf(c.cmd, c.interfaceParams...)
 	}
 
-	return shl.Command(c.cmd, c.params...)
+	return shl.Command(c.cmd, c.interfaceParams...)
 }
 
-func (c *Command) stringifySlice(params []interface{}) []string {
-	stringParams := make([]string, len(params))
-
-	for i, param := range params {
-		if s, ok := param.(string); ok {
-			stringParams[i] = s
-		} else {
-			stringParams[i] = fmt.Sprintf("%v", s)
-		}
+func (c *Command) addParam(param interface{}) {
+	if s, ok := param.(string); ok {
+		c.params = append(c.params, s)
+		c.interfaceParams = append(c.interfaceParams, s)
+	} else {
+		s := fmt.Sprintf("%v", param)
+		c.params = append(c.params, s)
+		c.interfaceParams = append(c.interfaceParams, s)
 	}
-
-	return stringParams
 }
